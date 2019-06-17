@@ -73,7 +73,7 @@ object Qt {
       case cls: ClassTransformData =>
         cls
           .updBody(genTransformedTypeBody(cls))
-          .addAnnotations(genCxxSource(cls.data))
+          .addAnnotations(genCxxSource(cls.data),genCxxWrapperAnnot(cls.data))
           .updCtorParams(genTransformedCtorParams(cls))
           .updParents(genTransformedParents(cls))
       case obj: ObjectTransformData =>
@@ -105,7 +105,7 @@ object Qt {
       val (externalBindings,signalHandlers) = tpe.body.collect {
         case t@DefDef(mods, name, types, args, rettype, rhs) if isSignal(rhs) =>
           val f = DefDef(mods,name,types,args, rettype, exprExtern)
-          (genExternalBinding(prefix,f,!tpe.isObject,data),
+          (genExternalBinding(prefix,f,!tpe.isObject)(data),
             genQtConnect(t)(data))
       }.unzip
 
@@ -117,14 +117,18 @@ object Qt {
     override def genTransformedTypeBody(t: TypeTransformData[TypeParts]): Seq[c.universe.Tree] = {
       val updBody = t.modParts.body map {
         case tree @ DefDef(mods, name, types, args, rettype, rhs) if isSignal(rhs) =>
-          transformSignalHandler(tree,t.data)
+          transformSignalHandler(tree)(t.data)
         case default => default
       }
       super.genTransformedTypeBody(t.updBody(updBody))
     }
 
-    private def transformSignalHandler(scalaDef: DefDef, data: Data): Tree = {
-      val externalName = data.externals(scalaDef.name.toString)._1
+    override protected def genCxxFQClassName(tpe: Type)(implicit data: Data): String =
+      tpe.typeSymbol.name.toString
+
+    private def transformSignalHandler(scalaDef: DefDef)(implicit data: Data): Tree = {
+      val scalaName = genScalaName(scalaDef)
+      val externalName = data.externals(scalaName)._1
       genExternalCall(externalName,scalaDef,false,data)
 
     }
@@ -132,11 +136,12 @@ object Qt {
     private def genQtConnect(scalaDef: DefDef)(implicit data: Data): String = {
       val returnType = "void"
       val name = genCxxName(scalaDef)
+      val scalaName = genScalaName(scalaDef)
       val params = Nil
       val clsPtr = data.cxxFQClassName + "* __p"
       val (cbParam,cbArg) = genQtCallback(scalaDef)
       val signalSender = genQtSignalSender(scalaDef)
-      s"""$returnType ${data.externalPrefix}$name($clsPtr, $cbParam) { QObject::connect(__p,$signalSender,$cbArg);  }"""
+      s"""$returnType ${data.externalPrefix}$scalaName($clsPtr, $cbParam) { QObject::connect(__p,$signalSender,$cbArg);  }"""
     }
 
     private def genQtCallback(scalaDef: DefDef)(implicit data: Data): (String,String) = {
@@ -157,7 +162,7 @@ object Qt {
       val types = getType(cb,true).dealias match {
         case t if t <:< tFunc0 || t <:< tFunc1 || t <:< tFunc2 || t <:< tFunc3 || t <:< tFunc4 || t <:< tFunc5 ||
                   t <:< tFunc6 || t <:< tFunc7 || t <:< tFunc8 || t <:< tFunc9 || t <:< tFunc10 =>
-          t.typeArgs.map(genCxxWrapperType)
+          t.typeArgs.map( t => genCxxWrapperType(t).default )
         case _ =>
           c.error(c.enclosingPosition,"Qt signal callbacks must have either the signature (arg0: CFuncPtrN[]) or (arg0: CFuncPtrN[], ctx: T)")
           ???

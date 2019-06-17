@@ -1,11 +1,12 @@
 package qt.widgets
 
 import de.surfice.smacrotools.debug
-import qt.core.{SignalCallback0, SignalCallback1}
+import qt.core.{QString, SignalCallback0, SignalCallback1}
 import qt.core.SignalCallback._
 import qt.macros.Qt
 
 import scalanative._
+import unsafe._
 import cxx._
 import qt.macros._
 
@@ -18,9 +19,10 @@ import scala.scalanative.runtime.{Intrinsics, RawPtr}
 @include("<QAbstractButton>")
 class QAbstractButton extends QWidget {
 
+//  @returnsRef
 //  def text: QString = extern
-//  def setText(text: QString): Unit = extern
-
+  def setText(@ref text: QString): Unit = extern
+  def setText(text: CString): Unit = setText(QString(text))
 
   // SIGNALS
 

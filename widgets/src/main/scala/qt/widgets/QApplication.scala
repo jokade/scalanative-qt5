@@ -12,7 +12,6 @@ import qt.macros._
 @Qt
 @include("<QApplication>")
 class QApplication extends QObject {
-
 }
 
 object QApplication {

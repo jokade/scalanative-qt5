@@ -8,10 +8,14 @@ import unsafe._
 import cxx._
 import qt5.macros._
 
-import scala.scalanative.annotation.ExternalSource
 
 @Qt
 @include("<QObject>")
 class QObject {
+}
 
+object QObject {
+  implicit final class Implicit(val o: QObject) extends AnyVal {
+    def rawPtr: Ptr[Byte] = o.__ptr
+  }
 }

@@ -17,4 +17,5 @@ package object core {
   type SignalCallback7[T1,T2,T3,T4,T5,T6,T7] = CFuncPtr8[RawPtr,T1,T2,T3,T4,T5,T6,T7,Unit]
   type SignalCallback8[T1,T2,T3,T4,T5,T6,T7,T8] = CFuncPtr9[RawPtr,T1,T2,T3,T4,T5,T6,T7,T8,Unit]
   type SignalCallback9[T1,T2,T3,T4,T5,T6,T7,T8,T9] = CFuncPtr10[RawPtr,T1,T2,T3,T4,T5,T6,T7,T8,T9,Unit]
+
 }

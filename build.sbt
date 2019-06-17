@@ -5,7 +5,7 @@ version in ThisBuild := "0.0.1-SNAPSHOT"
 scalaVersion in ThisBuild := "2.11.12"
 
 val Version = new {
-  val obj_interop = "0.1.0-SNAPSHOT"
+  val swog        = "0.1.0-SNAPSHOT"
   val smacrotools = "0.0.8"
   val utest       = "0.6.3"
 }
@@ -15,8 +15,9 @@ lazy val commonSettings = Seq(
   scalacOptions ++= Seq("-deprecation","-unchecked","-feature","-language:implicitConversions","-Xlint"),
   addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full),
   libraryDependencies ++= Seq(
-    "de.surfice" %%% "scalanative-interop-cxx" % Version.obj_interop
-    )
+    "de.surfice" %%% "swog-cxx" % Version.swog
+    ),
+  resolvers += Opts.resolver.sonatypeSnapshots
 )
 
 lazy val qt5 = project.in(file("."))
@@ -97,7 +98,7 @@ lazy val publishingSettings = Seq(
       </license>
     </licenses>
     <scm>
-      <url>git@github.com:jokade/scalanative-unqlite</url>
+      <url>git@github.com:jokade/scalanative-qt5</url>
       <connection>scm:git:git@github.com:jokade/scalanative-qt5.git</connection>
     </scm>
     <developers>

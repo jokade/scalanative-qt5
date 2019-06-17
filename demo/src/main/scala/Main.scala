@@ -1,3 +1,5 @@
+import calculator.Calculator
+import qt.core.QString
 import qt.widgets.{QApplication, QMainWindow, QPushButton}
 
 import scala.scalanative.runtime.{Intrinsics, RawPtr}
@@ -9,10 +11,10 @@ object Main {
     val app = QApplication(args)
     val win = QMainWindow()
 
-    val btn = QPushButton(c"Hello!")
-    win.setCentralWidget(btn)
+    val calc = Calculator()
+    win.setCentralWidget(calc)
+    win.setWindowTitle("Calculator")
 
-    btn.onReleased(() => println("FOO"))
     win.show()
     QApplication.exec()
   }
