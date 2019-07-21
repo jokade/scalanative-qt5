@@ -15,9 +15,18 @@ lazy val commonSettings = Seq(
   scalacOptions ++= Seq("-deprecation","-unchecked","-feature","-language:implicitConversions","-Xlint"),
   addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full),
   libraryDependencies ++= Seq(
-    "de.surfice" %%% "swog-cxx" % Version.swog
+    "de.surfice" %%% "swog-cxx" % Version.swog,
+    "com.lihaoyi" %%% "utest" % Version.utest % "test"
     ),
-  resolvers += Opts.resolver.sonatypeSnapshots
+  resolvers += Opts.resolver.sonatypeSnapshots,
+  testFrameworks += new TestFramework("utest.runner.Framework")
+)
+
+lazy val moduleSettings = commonSettings ++ Seq(
+  nativeLinkStubs := true,
+  nbhPkgConfigModules ++= Seq("Qt5Widgets"),
+  nbhCxxCXXFlags := "-std=c++11 -g" +: nbhPkgConfigCFlags.value,
+  nbhCxxLDFlags := nbhPkgConfigLinkingFlags.value
 )
 
 lazy val qt5 = project.in(file("."))
@@ -37,25 +46,25 @@ lazy val macros = project
   )
 
 lazy val core = project
-  .enablePlugins(ScalaNativePlugin)
+  .enablePlugins(ScalaNativePlugin,NBHAutoPlugin,NBHCxxPlugin,NBHPkgConfigPlugin)
   .dependsOn(macros)
-  .settings(commonSettings ++ publishingSettings: _*)
+  .settings(moduleSettings ++ publishingSettings: _*)
   .settings(
     name := "scalanative-qt5-core"
   )
 
 lazy val gui = project
-  .enablePlugins(ScalaNativePlugin)
+  .enablePlugins(ScalaNativePlugin,NBHAutoPlugin,NBHCxxPlugin,NBHPkgConfigPlugin)
   .dependsOn(core)
-  .settings(commonSettings ++ publishingSettings: _*)
+  .settings(moduleSettings ++ publishingSettings: _*)
   .settings(
     name := "scalanative-qt5-gui"
   )
 
 lazy val widgets = project
-  .enablePlugins(ScalaNativePlugin)
+  .enablePlugins(ScalaNativePlugin,NBHAutoPlugin,NBHCxxPlugin,NBHPkgConfigPlugin)
   .dependsOn(gui)
-  .settings(commonSettings ++ publishingSettings: _*)
+  .settings(moduleSettings ++ publishingSettings: _*)
   .settings(
     name := "scalanative-qt5-widgets"
   )
@@ -63,13 +72,14 @@ lazy val widgets = project
 lazy val demo = project
   .enablePlugins(ScalaNativePlugin,NBHAutoPlugin,NBHCxxPlugin,NBHPkgConfigPlugin)
   .dependsOn(widgets)
-  .settings(commonSettings ++ dontPublish: _*)
+  .settings(moduleSettings ++ dontPublish: _*)
   .settings(
     nativeLinkStubs := true,
     nbhPkgConfigModules ++= Seq("Qt5Widgets"),
     nbhCxxCXXFlags := "-std=c++11 -g" +: nbhPkgConfigCFlags.value,
     nbhCxxLDFlags := nbhPkgConfigLinkingFlags.value
   )
+
 
 lazy val dontPublish = Seq(
   publish := {},

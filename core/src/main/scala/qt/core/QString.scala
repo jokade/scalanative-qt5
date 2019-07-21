@@ -16,6 +16,8 @@ import scala.scalanative.interop.AutoReleasable
 @include("<QString>")
 class QString extends CxxObject with AutoReleasable {
 
+  def size: Int = extern
+
   @returnsValue
   def toLatin1()(implicit value: ResultValue[QByteArray]): Unit = extern
 
