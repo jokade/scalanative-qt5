@@ -1,6 +1,7 @@
 package qt.widgets
 
 import de.surfice.smacrotools.debug
+import qt.core.QtDockWidgetArea
 import qt.macros.Qt
 
 import scalanative._
@@ -17,6 +18,8 @@ class QMainWindow extends QWidget {
 
   def centralWidget: QWidget = extern
   def setCentralWidget(w: QWidget): Unit = extern
+
+  def addDockWidget(area: QtDockWidgetArea.Value, dockWidget: QDockWidget): Unit = extern
 }
 
 object QMainWindow {

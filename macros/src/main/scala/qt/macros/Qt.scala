@@ -8,7 +8,7 @@ import scala.scalanative.cobj.internal.CommonHandler
 import scala.scalanative.cxx.internal.CxxWrapperGen
 import scala.scalanative.unsafe._
 
-class Qt extends StaticAnnotation {
+class Qt(cxxType: String = null) extends StaticAnnotation {
   def macroTransform(annottees: Any*): Any = macro Qt.Macro.impl
 }
 
@@ -48,14 +48,14 @@ object Qt {
     override protected def tpeDefaultParent = tpeCxxObject
     private val tpeCxxObject = tq"$tCxxObject"
     //val annotationParamNames = Seq("namespace","prefix")
-    val annotationParamNames = Seq()
+    val annotationParamNames = Seq("cxxType")
 
     override def analyze: Analysis = super.analyze andThen {
       case (cls: ClassParts, data) =>
         val updData = (
           analyzeMainAnnotation(cls) _
             andThen analyzeTypes(cls) _
-            //            andThen analyzeConstructor(cls) _
+            andThen analyzeConstructor(cls) _
             andThen analyzeBody(cls) _
             andThen analyzeSignals(cls) _
           )(data)
@@ -91,10 +91,26 @@ object Qt {
 
     private def analyzeMainAnnotation(tpe: CommonParts)(data: Data): Data = {
       val annotParams = extractAnnotationParameters(c.prefix.tree, annotationParamNames)
+
+      val cxxType = annotParams("cxxType") match {
+        case Some(t) => Some(extractStringConstant(t).get)
+        case None => None
+      }
       val updData = data
         .withExternalPrefix(genPrefixName(tpe))
         .withCxxNamespace(None)
+        .withCxxType(cxxType)
       analyzeCxxAnnotation(tpe)(updData)
+    }
+
+    private def analyzeConstructor(cls: ClassParts)(data: Data): Data = {
+      val companionStmts =
+        if (cls.isClass && !cls.modifiers.hasFlag(Flag.ABSTRACT))
+          List(genWrapperImplicit(cls.name, cls.tparams, cls.params))
+        else
+          Nil
+      data
+        .withAdditionalCompanionStmts(data.additionalCompanionStmts ++ companionStmts)
     }
 
     private def genPrefixName(tpe: CommonParts): String =
@@ -110,7 +126,7 @@ object Qt {
       }.unzip
 
       data
-        .withExternals(data.externals ++ externalBindings.toMap)
+        .addExternals(externalBindings.toMap)
         .addCxxWrappers(signalHandlers)
     }
 

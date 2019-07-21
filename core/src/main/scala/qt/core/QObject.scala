@@ -6,12 +6,20 @@ import qt.macros.Qt
 import scalanative._
 import unsafe._
 import cxx._
-import qt5.macros._
+import scala.scalanative.interop.AutoReleasable
 
 
 @Qt
 @include("<QObject>")
-class QObject {
+class QObject extends CxxObject with AutoReleasable {
+  def blockSignals(block: Boolean): Boolean = extern
+  def signalsBlocked: Boolean = extern
+
+  @returnsConst
+  def parent: QObject = extern
+
+  def deleteLater(): Unit = extern
+  def free(): Unit = deleteLater()
 }
 
 object QObject {

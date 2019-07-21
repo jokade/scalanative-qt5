@@ -7,7 +7,7 @@ import scalanative._
 import unsafe._
 import cxx._
 
-@Qt
+@Qt(cxxType = "QToolButton")
 class Button extends QToolButton {
   setSizePolicy(QSizePolicy.Policy.Expanding,QSizePolicy.Policy.Preferred)
 }

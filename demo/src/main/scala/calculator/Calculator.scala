@@ -9,7 +9,7 @@ import cxx._
 import qt.macros._
 import qt.widgets.{QGridLayout, QLayout, QLineEdit, QToolButton, QWidget, SizeConstraint}
 
-@Qt
+@Qt(cxxType = "QWidget")
 class Calculator extends QWidget {
   private var _displayText = "0"
   private var _waitingForOperand = true

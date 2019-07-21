@@ -1,21 +1,24 @@
 package qt.core
 
+import de.surfice.smacrotools.debug
 import qt.macros.Qt
 
 import scalanative._
 import unsafe._
 import cxx._
-import qt5.macros._
 
 /**
  * @see [[]]
  */
-@Qt
+@Cxx
 @include("<QByteArray>")
 class QByteArray extends {
 
-//  def data(): CString = extern
+  def count: Int = extern
+  def data(): CString = extern
 }
 
 object QByteArray {
+  @constructor
+  def apply(): QByteArray = extern
 }

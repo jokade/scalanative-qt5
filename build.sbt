@@ -7,7 +7,7 @@ scalaVersion in ThisBuild := "2.11.12"
 val Version = new {
   val swog        = "0.1.0-SNAPSHOT"
   val smacrotools = "0.0.8"
-  val utest       = "0.6.3"
+  val utest       = "0.6.8-SNAPSHOT"
 }
 
 
@@ -22,7 +22,7 @@ lazy val commonSettings = Seq(
 
 lazy val qt5 = project.in(file("."))
   .enablePlugins(ScalaNativePlugin)
-  .aggregate(core,gui,widgets)
+  .aggregate(macros,core,gui,widgets)
   .settings(commonSettings ++ dontPublish:_*)
   .settings(
     name := "scalanative-qt5",
@@ -60,15 +60,15 @@ lazy val widgets = project
     name := "scalanative-qt5-widgets"
   )
 
-val qt5Prefix = "/usr/local/Cellar/qt/5.12.3/"
 lazy val demo = project
   .enablePlugins(ScalaNativePlugin,NBHAutoPlugin,NBHCxxPlugin,NBHPkgConfigPlugin)
   .dependsOn(widgets)
   .settings(commonSettings ++ dontPublish: _*)
   .settings(
     nativeLinkStubs := true,
-    nbhCxxCXXFlags := "-std=c++11 -DQT_WIDGETS_LIB -F/usr/local/Cellar/qt/5.12.3/lib -DQT_GUI_LIB -F/usr/local/Cellar/qt/5.12.3/lib -DQT_CORE_LIB -F/usr/local/Cellar/qt/5.12.3/lib -I/usr/local/Cellar/qt/5.12.3/lib/QtWidgets.framework/Headers -I/usr/local/Cellar/qt/5.12.3/lib/QtGui.framework/Headers -I/usr/local/Cellar/qt/5.12.3/lib/QtCore.framework/Headers".split(" "),
-    nbhCxxLDFlags := "-F/usr/local/Cellar/qt/5.12.3/lib -framework QtWidgets -F/usr/local/Cellar/qt/5.12.3/lib -framework QtGui -F/usr/local/Cellar/qt/5.12.3/lib -framework QtCore".split(" ")
+    nbhPkgConfigModules ++= Seq("Qt5Widgets"),
+    nbhCxxCXXFlags := "-std=c++11 -g" +: nbhPkgConfigCFlags.value,
+    nbhCxxLDFlags := nbhPkgConfigLinkingFlags.value
   )
 
 lazy val dontPublish = Seq(
