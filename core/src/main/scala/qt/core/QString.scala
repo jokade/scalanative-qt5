@@ -21,7 +21,7 @@ class QString extends CxxObject with AutoReleasable {
   @returnsValue
   def toLatin1()(implicit value: ResultValue[QByteArray]): Unit = extern
 
-  @cxxBody("return p->toLatin1().data_ptr()->data();")
+  @cxxBody("return __p->toLatin1().data_ptr()->data();")
   protected def toLatin1CString(): CString = extern
 //  @cxxBody("return p->toUtf8().data_ptr()->data();")
 //  protected def toUtf8CString(): CString = extern

@@ -1,6 +1,6 @@
 package qt.core.test
 
-import qt.core.{QList, QListLike, QString, QVector}
+import qt.core.{QList, QListLike, QString, QStringList, QVector}
 import utest._
 
 import scala.scalanative.cobj.CObject
@@ -50,3 +50,4 @@ object QListTest extends QListLikeTest {
 object QVectorTest extends QListLikeTest {
   override def empty[T<:CObject](): QListLike[T] = QVector[T]()
 }
+

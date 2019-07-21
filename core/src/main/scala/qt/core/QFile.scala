@@ -19,5 +19,6 @@ class QFile extends QFileDevice {
 
 object QFile {
   @constructor
-  def apply(@ref name: QString): QFileDevice = extern
+  def apply(@ref name: QString): QFile = extern
+  def apply(name: CString): QFile = withQString(name)(apply)
 }

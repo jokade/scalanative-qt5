@@ -18,8 +18,12 @@ class QIODevice extends QObject {
   def commitTransaction(): Unit = extern
   def currentReadChannel(): Int = extern
   def currentWriteChannel(): Int = extern
-  @returnsConst
-  def errorString(): QString = extern
+//  @returnsConst
+//  def errorString(): QString = extern
+  @cxxBody("return __p->errorString().toLatin1().data_ptr()->data();")
+  def errorCString(): CString = extern
+
+  def errorMessage: String = fromCString(errorCString())
 
   def isOpen: Boolean = extern
   def isReadable: Boolean = extern
