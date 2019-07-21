@@ -23,8 +23,13 @@ class QString extends CxxObject with AutoReleasable {
 
   @cxxBody("return p->toLatin1().data_ptr()->data();")
   protected def toLatin1CString(): CString = extern
+//  @cxxBody("return p->toUtf8().data_ptr()->data();")
+//  protected def toUtf8CString(): CString = extern
 
   def latin1String: String = fromCString(toLatin1CString())
+//  def utf8String: String = fromCString(toUtf8CString())
+
+  override def toString: String = latin1String
 
   @delete
   override def free(): Unit = extern

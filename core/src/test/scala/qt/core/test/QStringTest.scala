@@ -12,6 +12,12 @@ object QStringTest extends TestSuite {
       val s = QString(c"Hello")
       s.size ==> 5
     }
+    'createFromString-{
+      val s = Zone{ implicit z =>
+        QString("Hello")
+      }
+      s.size ==> 5
+    }
     'latin1String-{
       val s = QString(c"Hello")
       s.latin1String ==> "Hello"
