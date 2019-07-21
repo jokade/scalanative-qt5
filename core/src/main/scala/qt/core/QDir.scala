@@ -13,7 +13,7 @@ import scala.scalanative.interop.AutoReleasable
  */
 @Qt
 @include("<QDir>")
-final class QDir extends AutoReleasable with CObject {
+final class QDir extends ImplicitlyShared {
   def exists: Boolean = extern
   def isRelative: Boolean = extern
   def isAbsolute: Boolean = extern

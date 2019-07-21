@@ -7,12 +7,15 @@ import scalanative._
 import unsafe._
 import cxx._
 import qt.macros._
-import qt.widgets.{QGridLayout, QLayout, QLineEdit, QToolButton, QWidget, SizeConstraint}
+import qt.widgets.{QGridLayout, QLayout, QLineEdit, QMainWindow, QToolButton, QWidget, SizeConstraint}
 
 @Qt(cxxType = "QWidget")
+@include("<QWidget>")
 class Calculator extends QWidget {
   private var _displayText = "0"
   private var _waitingForOperand = true
+
+  setWindowTitle("Calcluator")
 
   val display = {
     val display = QLineEdit(c"")

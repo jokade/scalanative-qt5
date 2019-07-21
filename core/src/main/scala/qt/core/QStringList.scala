@@ -16,7 +16,7 @@ import scala.scalanative.interop.AutoReleasable
 @Cxx
 @include("<QStringList>")
 @debug
-final class QStringList extends AutoReleasable with CObject {
+final class QStringList extends ImplicitlyShared {
   def size: CInt = extern
   @cxxBody("return __p->at(idx).toLatin1().data_ptr()->data();")
   def cstring(idx: Int): CString = extern

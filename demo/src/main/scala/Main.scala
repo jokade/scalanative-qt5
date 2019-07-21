@@ -1,27 +1,19 @@
 import calculator.Calculator
-import qt.core.{QByteArray, QList, QObject, QString}
-import qt.widgets.{QApplication, QMainWindow, QPushButton}
+import notepad.Notepad
+import qt.widgets.QApplication
 
-import scala.scalanative.cobj.ResultValue
-import scala.scalanative.runtime.{Intrinsics, RawPtr}
-import scalanative._
-import unsafe._
+import scala.scalanative.interop.AutoreleasePool
 
 object Main {
-  def main(args: Array[String]): Unit = Zone{ implicit z =>
+  def main(args: Array[String]): Unit = AutoreleasePool{ implicit pool =>
     val app = QApplication(args)
-    val win = QMainWindow()
 
-    val calc = Calculator()
-    win.setCentralWidget(calc)
-    win.setWindowTitle("Calculator")
+    val calc = Calculator().autorelease
+    calc.show()
 
-//    val list = QList[QString]()
-//    println(QByteArray.__sizeof)
-    val s = QString(c"Hello")
-    println( s.latin1String)
+    val notepad = Notepad().autorelease
+    notepad.show()
 
-    win.show()
     QApplication.exec()
   }
 }

@@ -2,13 +2,15 @@ package qt.widgets
 
 import de.surfice.smacrotools.debug
 import qt.macros.Qt
-import qt.core.{QObject, QString, QZone}
+import qt.core.{QList, QObject, QString, QZone}
 import qt.gui.QFont
 
 import scalanative._
 import unsafe._
 import cxx._
 import qt.macros._
+
+import scala.scalanative.cobj.{CObjectWrapper, ResultValue}
 
 /**
  * @see [[https://doc.qt.io/qt-5/qwidget.html]]
@@ -28,6 +30,10 @@ class QWidget extends QObject {
     setWindowTitle(s)
     s.free()
   }
+
+  @returnsValue
+  @cxxBody("*((QList<QAction*>*)__res) =  __p->actions();")
+  def actions()(implicit v: ResultValue[QList[QAction]]): Unit = extern
 
   @returnsRef
   def font: QFont = extern

@@ -31,7 +31,7 @@ lazy val moduleSettings = commonSettings ++ Seq(
 
 lazy val qt5 = project.in(file("."))
   .enablePlugins(ScalaNativePlugin)
-  .aggregate(macros,core,gui,widgets)
+  .aggregate(macros,core,gui,widgets,uitools)
   .settings(commonSettings ++ dontPublish:_*)
   .settings(
     name := "scalanative-qt5",
@@ -61,6 +61,7 @@ lazy val gui = project
     name := "scalanative-qt5-gui"
   )
 
+
 lazy val widgets = project
   .enablePlugins(ScalaNativePlugin,NBHAutoPlugin,NBHCxxPlugin,NBHPkgConfigPlugin)
   .dependsOn(gui)
@@ -69,13 +70,21 @@ lazy val widgets = project
     name := "scalanative-qt5-widgets"
   )
 
-lazy val demo = project
+lazy val uitools = project
   .enablePlugins(ScalaNativePlugin,NBHAutoPlugin,NBHCxxPlugin,NBHPkgConfigPlugin)
   .dependsOn(widgets)
+  .settings(moduleSettings ++ publishingSettings: _*)
+  .settings(
+    name := "scalanative-qt5-uitools"
+  )
+
+lazy val demo = project
+  .enablePlugins(ScalaNativePlugin,NBHAutoPlugin,NBHCxxPlugin,NBHPkgConfigPlugin)
+  .dependsOn(widgets,uitools)
   .settings(moduleSettings ++ dontPublish: _*)
   .settings(
     nativeLinkStubs := true,
-    nbhPkgConfigModules ++= Seq("Qt5Widgets"),
+    nbhPkgConfigModules ++= Seq("Qt5Widgets,Qt5UiTools"),
     nbhCxxCXXFlags := "-std=c++11 -g" +: nbhPkgConfigCFlags.value,
     nbhCxxLDFlags := nbhPkgConfigLinkingFlags.value
   )

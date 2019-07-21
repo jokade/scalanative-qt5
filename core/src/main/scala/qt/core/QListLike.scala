@@ -5,7 +5,7 @@ import unsafe._
 import cobj._
 import scala.scalanative.interop.AutoReleasable
 
-trait QListLike[T<:CObject] extends AutoReleasable {
+trait QListLike[T<:CObject] extends AutoReleasable with CObject {
   def size: Int
   def append(value: T): Unit
   def at(idx: Int)(implicit wrapper: CObjectWrapper[T]): T

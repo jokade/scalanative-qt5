@@ -14,7 +14,7 @@ import scala.scalanative.interop.AutoReleasable
  */
 @Cxx
 @include("<QString>")
-class QString extends CxxObject with AutoReleasable {
+class QString extends ImplicitlyShared {
 
   def size: Int = extern
 
@@ -36,8 +36,14 @@ class QString extends CxxObject with AutoReleasable {
 }
 
 object QString {
+
   @constructor
   def apply(s: CString): QString = extern
 
   def apply(s: String)(implicit z: Zone): QString = apply(toCString(s))
+
+  def withValue[T](f: ResultValue[QString]=>T): T = {
+    val r = ResultValue.stackalloc[QString]
+    f(r)
+  }
 }
