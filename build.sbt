@@ -12,7 +12,7 @@ val Version = new {
 
 
 lazy val commonSettings = Seq(
-  scalacOptions ++= Seq("-deprecation","-unchecked","-feature","-language:implicitConversions","-Xlint"),
+  scalacOptions ++= Seq("-deprecation","-unchecked","-feature","-language:implicitConversions","-Xlint","-Ybreak-cycles"),
   addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full),
   libraryDependencies ++= Seq(
     "de.surfice" %%% "swog-cxx" % Version.swog,

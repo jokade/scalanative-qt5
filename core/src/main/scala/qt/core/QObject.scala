@@ -12,6 +12,7 @@ import scala.scalanative.interop.AutoReleasable
 
 @Qt
 @include("<QObject>")
+@debug
 class QObject extends CxxObject with AutoReleasable {
   def blockSignals(block: Boolean): Boolean = extern
   def signalsBlocked: Boolean = extern
@@ -22,9 +23,16 @@ class QObject extends CxxObject with AutoReleasable {
   @cxxBody("return __p->findChild<QObject *>(*name);")
   def findChild[T<:QObject](@ref name: QString)(implicit wrapper: CObjectWrapper[T]): T = extern
 
+  def findChild[T<:QObject](name: String)(implicit wrapper: CObjectWrapper[T]): T = QZone{ implicit z =>
+    val _name = QString.value
+    _name.set(name)
+    findChild[T](_name)
+  }
+
   def findChildren[T<:QObject](names: String*)(implicit wrapper: CObjectWrapper[T]): Seq[T] = QZone{ implicit z =>
+    val name = QString.value
     names.map{ s =>
-      val name = QString(s)
+      name.set(s)
       findChild[T](name)
     }
   }

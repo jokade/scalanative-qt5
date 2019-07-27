@@ -28,6 +28,8 @@ final class QList[T<:CObject] extends QListLike[T] {
   @delete
   override def free(): Unit = extern
 
+  @cxxBody("*(size_t*)__p = (size_t)(&QListData::shared_null);")
+  protected def initValue(): Unit = extern
 }
 
 object QList {
