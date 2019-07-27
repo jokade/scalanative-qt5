@@ -2,7 +2,7 @@ package qt.widgets
 
 import de.surfice.smacrotools.debug
 import qt.macros.Qt
-import qt.core.QObject
+import qt.core.{QCoreApplication, QObject}
 
 import scalanative._
 import unsafe._
@@ -11,7 +11,7 @@ import qt.macros._
 
 @Qt
 @include("<QApplication>")
-class QApplication extends QObject {
+class QApplication extends QCoreApplication {
 }
 
 object QApplication {
