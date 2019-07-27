@@ -14,6 +14,14 @@ These wrappers must then be compiled and linked into the executable. For this to
 * SN-0.4.0-SNAPSHOT with `this PR <https://github.com/scala-native/scala-native/pull/1632>`_
 * sbt-nbh master `<https://github.com/jokade/sbt-nbh>`_
 
+Furthermore you'll need `pkg-config` with the package `Qt5Widgets` installed. To check your configuration, run
+
+.. code::
+
+  pkg-config --cflags Qt5Widgets
+  
+This should list all the flags required to compile against `Qt5Widgets`.
+
 Demo
 ----
 .. image:: docs/images/editor.png
