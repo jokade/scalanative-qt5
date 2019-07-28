@@ -157,7 +157,8 @@ object Qt {
       val clsPtr = data.cxxFQClassName + "* __p"
       val (cbParam,cbArg) = genQtCallback(scalaDef)
       val signalSender = genQtSignalSender(scalaDef)
-      s"""$returnType ${data.externalPrefix}$scalaName($clsPtr, $cbParam) { QObject::connect(__p,$signalSender,$cbArg);  }"""
+      val body = findCxxBody(scalaDef).getOrElse(s"QObject::connect(__p,$signalSender,$cbArg);")
+      s"""$returnType ${data.externalPrefix}$scalaName($clsPtr, $cbParam) { $body }"""
     }
 
     private def genQtCallback(scalaDef: DefDef)(implicit data: Data): (String,String) = {
@@ -178,7 +179,10 @@ object Qt {
       val types = getType(cb,true).dealias match {
         case t if t <:< tFunc0 || t <:< tFunc1 || t <:< tFunc2 || t <:< tFunc3 || t <:< tFunc4 || t <:< tFunc5 ||
                   t <:< tFunc6 || t <:< tFunc7 || t <:< tFunc8 || t <:< tFunc9 || t <:< tFunc10 =>
-          t.typeArgs.map( t => genCxxWrapperType(t).default )
+          t.typeArgs.map(genCxxWrapperType(_) match {
+            case cls: ClassType => s"const ${cls.name}&"
+            case x => x.default
+          })
         case _ =>
           c.error(c.enclosingPosition,"Qt signal callbacks must have either the signature (arg0: CFuncPtrN[]) or (arg0: CFuncPtrN[], ctx: T)")
           ???
