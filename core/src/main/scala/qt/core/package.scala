@@ -19,6 +19,7 @@ package object core {
   type SignalCallback9[T1,T2,T3,T4,T5,T6,T7,T8,T9] = CFuncPtr10[RawPtr,T1,T2,T3,T4,T5,T6,T7,T8,T9,Unit]
 
   type qint64 = CLongLong
+  type qreal  = CDouble
 
   def withQString[T](cstr: CString)(f: QString=>T): T = {
     val s = QString(cstr)
