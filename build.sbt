@@ -31,7 +31,7 @@ lazy val moduleSettings = commonSettings ++ Seq(
 
 lazy val qt5 = project.in(file("."))
   .enablePlugins(ScalaNativePlugin)
-  .aggregate(macros,core,gui,widgets,uitools)
+  .aggregate(macros,core,gui,widgets,uitools,multimedia,multimediawidgets)
   .settings(commonSettings ++ dontPublish:_*)
   .settings(
     name := "scalanative-qt5",
@@ -78,13 +78,29 @@ lazy val uitools = project
     name := "scalanative-qt5-uitools"
   )
 
+lazy val multimedia = project
+  .enablePlugins(ScalaNativePlugin,NBHAutoPlugin,NBHCxxPlugin,NBHPkgConfigPlugin)
+  .dependsOn(core)
+  .settings(moduleSettings ++ publishingSettings: _*)
+  .settings(
+    name := "scalanative-qt5-multimedia"
+  )
+
+lazy val multimediawidgets = project
+  .enablePlugins(ScalaNativePlugin,NBHAutoPlugin,NBHCxxPlugin,NBHPkgConfigPlugin)
+  .dependsOn(widgets,multimedia)
+  .settings(moduleSettings ++ publishingSettings: _*)
+  .settings(
+    name := "scalanative-qt5-multimediawidgets"
+  )
+
 lazy val demo = project
   .enablePlugins(ScalaNativePlugin,NBHAutoPlugin,NBHCxxPlugin,NBHPkgConfigPlugin)
-  .dependsOn(widgets,uitools)
+  .dependsOn(widgets,uitools,multimediawidgets)
   .settings(moduleSettings ++ dontPublish: _*)
   .settings(
     nativeLinkStubs := true,
-    nbhPkgConfigModules ++= Seq("Qt5Widgets,Qt5UiTools"),
+    nbhPkgConfigModules ++= Seq("Qt5Widgets","Qt5UiTools","Qt5MultimediaWidgets"),
     nbhCxxCXXFlags := "-std=c++11 -g" +: nbhPkgConfigCFlags.value,
     nbhCxxLDFlags := nbhPkgConfigLinkingFlags.value
   )

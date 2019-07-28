@@ -11,7 +11,7 @@ import cxx._
  */
 @Qt
 @include("<QVBoxLayout>")
-class QVBoxLayout {
+class QVBoxLayout extends QBoxLayout {
 
 }
 
