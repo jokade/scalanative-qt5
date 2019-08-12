@@ -14,7 +14,7 @@ import scala.scalanative.unsafe._
  */
 @Cxx
 @include("<QString>")
-class QString {
+class QString extends Value {
   def size: Int = extern
   def clear(): Unit = extern
 
@@ -39,7 +39,7 @@ class QString {
   def free(): Unit = extern
 
   @cxxBody("*(size_t*)__p = (size_t)QStringData::shared_null;")
-  protected def initValue(): Unit = extern
+  protected[qt] def initValue(): Unit = extern
 
   @cxxBody("*__p = cstr;")
   def set(cstr: CString): Unit = extern
@@ -47,7 +47,7 @@ class QString {
   def set(s: String)(implicit z: Zone): Unit = set(toCString(s))
 }
 
-object QString {
+object QString extends ValueProvider[QString] {
 
   @constructor
   def apply(): QString = extern
@@ -82,6 +82,9 @@ object QString {
 class QStringValue extends QString with ResultValue[QString] {
   protected[core] var _isAllocated = true
   override def free(): Unit = if(_isAllocated) super.free()
+
+//  @inline final def :=(value: String)(implicit zone: Zone): Unit = this.set(value)
+//  @inline final def :=(value: CString): Unit = this.set(value)
 }
 object QStringValue {
   @constructor("QString")

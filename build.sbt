@@ -24,14 +24,14 @@ lazy val commonSettings = Seq(
 
 lazy val moduleSettings = commonSettings ++ Seq(
   nativeLinkStubs := true,
-  nbhPkgConfigModules ++= Seq("Qt5Widgets"),
+  nbhPkgConfigModules ++= Seq("Qt5Widgets","Qt5Network"),
   nbhCxxCXXFlags := "-std=c++11 -g" +: nbhPkgConfigCFlags.value,
   nbhCxxLDFlags := nbhPkgConfigLinkingFlags.value
 )
 
 lazy val qt5 = project.in(file("."))
   .enablePlugins(ScalaNativePlugin)
-  .aggregate(macros,core,gui,widgets,uitools,multimedia,multimediawidgets)
+  .aggregate(macros,core,network,gui,widgets,uitools,multimedia,multimediawidgets)
   .settings(commonSettings ++ dontPublish:_*)
   .settings(
     name := "scalanative-qt5",
@@ -51,6 +51,14 @@ lazy val core = project
   .settings(moduleSettings ++ publishingSettings: _*)
   .settings(
     name := "scalanative-qt5-core"
+  )
+
+lazy val network = project
+  .enablePlugins(ScalaNativePlugin,NBHAutoPlugin,NBHCxxPlugin,NBHPkgConfigPlugin)
+  .dependsOn(core)
+  .settings(moduleSettings ++ publishingSettings: _*)
+  .settings(
+    name := "scalanative-qt5-network"
   )
 
 lazy val gui = project

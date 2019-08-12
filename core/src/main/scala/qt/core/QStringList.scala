@@ -15,7 +15,7 @@ import scala.scalanative.interop.AutoReleasable
  */
 @Cxx
 @include("<QStringList>")
-class QStringList {
+class QStringList extends Value with AutoReleasable {
   def size: CInt = extern
   @cxxBody("return __p->at(idx).toLatin1().data_ptr()->data();")
   def cstring(idx: Int): CString = extern
@@ -36,10 +36,10 @@ class QStringList {
   def apply(idx: Int): String = fromCString(cstring(idx))
 
   @cxxBody("*(size_t*)__p = (size_t)(&QListData::shared_null);")
-  protected def initValue(): Unit = extern
+  protected[qt] def initValue(): Unit = extern
 }
 
-object QStringList {
+object QStringList extends ValueProvider[QStringList] {
   @constructor
   def apply(): QStringList = extern
 
