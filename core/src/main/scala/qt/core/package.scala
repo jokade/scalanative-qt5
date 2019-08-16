@@ -1,5 +1,6 @@
 package qt
 
+import scala.concurrent.ExecutionContext
 import scala.scalanative.runtime.RawPtr
 import scalanative.unsafe._
 
@@ -26,5 +27,9 @@ package object core {
     val res = f(s)
     s .free()
     res
+  }
+
+  object Implicits {
+    implicit val eventLoop: ExecutionContext = EventLoop
   }
 }
