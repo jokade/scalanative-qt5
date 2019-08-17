@@ -21,4 +21,5 @@ object QFile {
   @constructor
   def apply(@ref name: QString): QFile = extern
   def apply(name: CString): QFile = withQString(name)(apply)
+  def apply(name: String): QFile = QString.withValue(name)(apply)
 }

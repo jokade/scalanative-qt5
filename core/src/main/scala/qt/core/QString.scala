@@ -60,7 +60,14 @@ object QString extends ValueProvider[QString] {
     val ptr = unsafe.stackalloc[Byte](__sizeof)
     val s = new QStringValue(ptr)
     s._isAllocated = false
+    s.initValue()
     f(s)
+  }
+
+  def withValue[T](s: String)(f: QStringValue=>T): T = QZone{ implicit z =>
+    val v = QString.value
+    v.set(s)
+    f(v)
   }
 
   def value(implicit z: Zone): QStringValue = {

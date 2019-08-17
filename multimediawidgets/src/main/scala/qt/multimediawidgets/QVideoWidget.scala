@@ -30,8 +30,8 @@ class QVideoWidget extends QWidget with QVideoWidgetLike {
   def saturation: Int = extern
   def setSaturation(s: Int): Unit = extern
   
-  def isFullScreen: Boolean = extern
-  def setFullScreen(f: Boolean): Unit = extern
+//  def isFullScreen: Boolean = extern
+//  def setFullScreen(f: Boolean): Unit = extern
   
   def onFullScreenChanged(cb: SignalCallback1[CBool], ctx: RawPtr): Unit = signal
   def onFullScreenChanged(cb: CBool=>Unit): Unit = onFullScreenChanged( fromFunction1(cb), cb.toCtx )

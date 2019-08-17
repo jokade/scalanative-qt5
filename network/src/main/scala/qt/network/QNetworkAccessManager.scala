@@ -9,6 +9,7 @@ import unsafe._
 import cxx._
 import qt.macros._
 
+import scala.scalanative.interop.{AutoreleasePool, PoolZone}
 import scala.scalanative.runtime.RawPtr
 
 /**
@@ -23,6 +24,12 @@ class QNetworkAccessManager extends QObject {
   @cxxBody("return __p->get(QNetworkRequest(*url));")
   def get(@ref url: QUrl): QNetworkReply = extern
 
+  def get(url: String): QNetworkReply = {
+    val _url = QUrl(url)
+    val res = get(_url)
+    _url.free()
+    res
+  }
 //  def onFinished(cb: SignalCallback1[QNetworkReply], ctx: RawPtr): Unit = signal
 //  def onFinished(cb: Function1[QNetworkReply,Unit]): Unit = onFinished( fromFunction1(cb), cb.toCtx )
 }

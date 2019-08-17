@@ -76,6 +76,7 @@ object QDir {
   @constructor
   def apply(@ref path: QString): QDir = extern
   def apply(path: CString): QDir = withQString(path)(apply)
+  def apply(path: String): QDir = QString.withValue(path)(apply)
 
 //  @returnsValue
 //  def current()(implicit v: ResultValue[QDir]): QDir = extern

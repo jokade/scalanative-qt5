@@ -8,12 +8,10 @@ import scalanative._
 import unsafe._
 
 object Main {
-  def main(args: Array[String]): Unit = {
+  def main(args: Array[String]): Unit = Zone{ implicit z =>
     QCoreApplication(args)
     val mgr = QNetworkAccessManager()
-    val url = QUrl(c"http://www.omdbapi.com/?apikey=381e81be&s=double")
-    println(fromCString(url.toCString))
-    val resp = mgr.get(url)
+    val resp = mgr.get("http://www.omdbapi.com/?apikey=381e81be&s=double")
     resp.onFinished{ () => Zone{ implicit z =>
       val bytes = QByteArray.value
       bytes := resp.readAll()

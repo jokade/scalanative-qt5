@@ -1,0 +1,19 @@
+package qt.core
+
+import scalanative._
+import unsafe._
+import cxx._
+import qt.macros._
+
+/**
+ * @see [[https://doc.qt.io/qt-5/qabstracttablemodel.html]]
+ */
+@Qt
+@include("<QAbstractTableModel>")
+class QAbstractTableModel extends QAbstractItemModel {
+
+}
+
+object QAbstractTableModel {
+}
+

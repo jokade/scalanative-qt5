@@ -16,7 +16,6 @@ import qt.core.SignalCallback._
  */
 @Qt
 @include("<QIODevice>")
-@debug
 class QIODevice extends QObject {
   def bytesAvailable: qint64 = extern
   def bytesToWrite: qint64 = extern
