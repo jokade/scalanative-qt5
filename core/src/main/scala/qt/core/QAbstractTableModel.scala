@@ -1,5 +1,7 @@
 package qt.core
 
+import de.surfice.smacrotools.debug
+
 import scalanative._
 import unsafe._
 import cxx._
@@ -10,7 +12,7 @@ import qt.macros._
  */
 @Qt
 @include("<QAbstractTableModel>")
-class QAbstractTableModel extends QAbstractItemModel {
+abstract class QAbstractTableModel extends QAbstractItemModel {
 
 }
 

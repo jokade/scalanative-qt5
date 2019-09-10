@@ -15,7 +15,6 @@ import scala.scalanative.cobj.{ResultPtr, ResultValue}
  */
 @Qt
 @include("<QLineEdit>")
-@debug
 class QLineEdit extends QWidget {
 
   def addAction(action: QAction, position: QLineEditActionPosition.Value): Unit = extern

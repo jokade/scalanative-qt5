@@ -5,3 +5,5 @@ addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "1.1")
 addSbtPlugin("com.jsuereth" % "sbt-pgp" % "1.0.0")
 
 addSbtPlugin("de.surfice" % "sbt-nbh" % "0.2.0-SNAPSHOT")
+
+addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.3")

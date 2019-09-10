@@ -31,7 +31,7 @@ class QAbstractItemView extends QAbstractScrollArea {
   def setHorizontalScrollMode(mode: QAbstractItemViewScrollMode.Value): Unit = extern
 
 
-  def model: QAbstractItemModel = extern
+//  def model: QAbstractItemModel = extern
   def setModel(m: QAbstractItemModel): Unit = extern
 
   def selectionBehavior: QAbstractItemViewSelectionBehavior.Value = extern

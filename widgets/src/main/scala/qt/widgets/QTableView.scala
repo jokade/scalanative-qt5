@@ -11,11 +11,11 @@ import qt.macros._
 @Qt
 @include("<QTableView>")
 class QTableView extends QAbstractItemView {
-
   def horizontalHeader: QHeaderView = extern
-
   def verticalHeader: QHeaderView = extern
 }
 
 object QTableView {
+  @constructor
+  def apply(): QTableView = extern
 }

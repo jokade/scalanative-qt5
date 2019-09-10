@@ -11,15 +11,16 @@ import scala.scalanative.cxx._
  */
 @Qt
 @include("<QAbstractItemModel>")
-class QAbstractItemModel extends QObject {
+abstract class QAbstractItemModel extends QObject {
 
-  def columnCount: Int = extern
+  def columnCount(@ref parent: QAbstractItemModel): Int
 
-  def data(@ref idx: QModelIndex)(res: ResultValue[QVariant]): Unit = extern
+  def rowCount(@ref parent: QAbstractItemModel): Int
 
-  def rowCount: Int = extern
+//  def data(@ref idx: QModelIndex)(res: ResultValue[QVariant]): Unit
 
-  def layoutChanged(): Unit = extern
+
+//  def layoutChanged(): Unit = extern
 }
 
 object QAbstractItemModel {

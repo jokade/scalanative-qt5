@@ -1,6 +1,8 @@
 package qt
 
 import scala.concurrent.ExecutionContext
+import scala.scalanative.cobj.CEnum
+import scala.scalanative.cxx.CxxEnum
 import scala.scalanative.runtime.RawPtr
 import scalanative.unsafe._
 
@@ -31,5 +33,19 @@ package object core {
 
   object Implicits {
     implicit val eventLoop: ExecutionContext = EventLoop
+  }
+
+  @CxxEnum("Qt::ItemFlags")
+  object QtItemFlags extends CEnum {
+    val NoItemFlags	         = Value(0)
+    val ItemIsSelectable	   = Value(1)
+    val ItemIsEditable	     = Value(2)
+    val ItemIsDragEnabled	   = Value(4)
+    val ItemIsDropEnabled	   = Value(8)
+    val ItemIsUserCheckable	 = Value(16)
+    val ItemIsEnabled	       = Value(32)
+    val ItemIsAutoTristate	 = Value(64)
+    val ItemNeverHasChildren = Value(128)
+    val ItemIsUserTristate	 = Value(256)
   }
 }

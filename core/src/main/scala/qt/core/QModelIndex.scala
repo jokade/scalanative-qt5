@@ -13,7 +13,7 @@ import qt.macros._
 class QModelIndex extends Value {
   def column: Int = extern
   def isValid: Boolean = extern
-  def model: QAbstractItemModel = extern
+//  def model: QAbstractItemModel = extern
   def row: Int = extern
   override protected[qt] def initValue(): Unit = {}
 }

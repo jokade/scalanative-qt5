@@ -1,17 +1,19 @@
 package qt.widgets
 
-import qt.core.{QAbstractTableModel, QVariant}
+import qt.core.{QAbstractTableModel, QVariant, QtItemFlags}
 
 import scala.scalanative._
 import unsafe._
 import cxx._
 import scala.scalanative.annotation.InlineSource
 import scala.scalanative.runtime.{Intrinsics, RawPtr}
-
+/*
 trait TableModelData {
   def rowCount: Int
   def columnCount: Int
   def get(row: Int, column: Int, result: QVariant): Unit
+
+  def flags(row: Int, column: Int): QtItemFlags.Value = QtItemFlags.NoItemFlags
 }
 
 @Cxx(namespace = "snqt", classname = "TableModel")
@@ -27,6 +29,7 @@ class TableModel private() extends QAbstractTableModel {
     ptr._1 = TableModel.rowCount
     ptr._2 = TableModel.columnCount
     ptr._3 = TableModel.get
+    ptr._4 = TableModel.flags
     setCallbacks(Intrinsics.castObjectToRawPtr(this),ptr.asInstanceOf[Ptr[Byte]])
   }
   init()
@@ -43,6 +46,7 @@ namespace snqt {
     int (*rowCount)(void* snobj);
     int (*columnCount)(void* snobj);
     QVariant* (*get)(void* snobj, int row, int column);
+    Qt::ItemFlags (*flags)(void* snobj, int row, int column);
   };
 
   class TableModel : QAbstractTableModel {
@@ -56,14 +60,20 @@ namespace snqt {
     int rowCount(const QModelIndex &parent = QModelIndex()) const override { return callbacks.rowCount(snobj); }
     int columnCount(const QModelIndex &parent = QModelIndex()) const override { return callbacks.columnCount(snobj); }
     QVariant data(const QModelIndex &index, int role) const override { return *callbacks.get(snobj,index.row(),index.column()); }
+    Qt::ItemFlags flags(const QModelIndex &index) const override { return callbacks.flags(snobj,index.row(),index.column()); }
   };
 }
 """)
 object TableModel {
-  private type Callbacks = CStruct3[
+  private type Callbacks = CStruct4[
+    // rowCount
     CFuncPtr1[RawPtr,Int],
+    // columnCount
     CFuncPtr1[RawPtr,Int],
-    CFuncPtr3[RawPtr,Int,Int,Ptr[Byte]]]
+    // get
+    CFuncPtr3[RawPtr,Int,Int,Ptr[Byte]],
+    // flags
+    CFuncPtr3[RawPtr,Int,Int,Int]]
 
   @inline private final def toInstance(ptr: RawPtr): TableModel = Intrinsics.castRawPtrToObject(ptr).asInstanceOf[TableModel]
 
@@ -82,6 +92,11 @@ object TableModel {
       model._value.__ptr
     }
   }
+
+  private val flags = new CFuncPtr3[RawPtr,Int,Int,Int] {
+    override def apply(ptr: RawPtr, row: Int, col: Int): Int = toInstance(ptr)._data.flags(row,col).value
+  }
+
   @constructor
   private def apply(): TableModel = extern
 
@@ -91,3 +106,4 @@ object TableModel {
     model
   }
 }
+*/

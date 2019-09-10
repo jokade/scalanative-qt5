@@ -1,11 +1,13 @@
 package qt.gui
 
-import qt.core.QAbstractItemModel
+import qt.core.{QAbstractItemModel, QModelIndex, QVariant}
 
 import scalanative._
 import unsafe._
 import cxx._
 import qt.macros._
+
+import scala.scalanative.cobj.ResultValue
 
 /**
  * @see [[https://doc.qt.io/qt-5/qstandarditemmodel.html]]
@@ -13,6 +15,8 @@ import qt.macros._
 @Qt
 @include("<QStandardItemModel>")
 class QStandardItemModel extends QAbstractItemModel {
+  override def columnCount(@ref parent: QAbstractItemModel): CInt = extern
+  override def rowCount(@ref parent: QAbstractItemModel): CInt = extern
 }
 
 object QStandardItemModel {

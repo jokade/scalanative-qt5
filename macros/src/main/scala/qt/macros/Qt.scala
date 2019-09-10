@@ -45,8 +45,8 @@ object Qt {
       def withQtSignals(signals: Signals): Data = data.updated("qtSignals",signals)
     }
 
-    override protected def tpeDefaultParent = tpeCxxObject
-    private val tpeCxxObject = tq"$tCxxObject"
+//    override protected def tpeDefaultParent = tpeCxxObject
+//    private val tpeCxxObject = tq"$tCxxObject"
     //val annotationParamNames = Seq("namespace","prefix")
     val annotationParamNames = Seq("cxxType")
 
@@ -102,8 +102,8 @@ object Qt {
         .withCxxType(cxxType)
       analyzeCxxAnnotation(tpe)(updData)
     }
-
-    private def analyzeConstructor(cls: ClassParts)(data: Data): Data = {
+/*
+    override protected def analyzeConstructor(cls: ClassParts)(data: Data): Data = {
       val companionStmts =
         if (cls.isClass && !cls.modifiers.hasFlag(Flag.ABSTRACT))
           List(genWrapperImplicit(cls.name, cls.tparams, cls.params))
@@ -112,7 +112,7 @@ object Qt {
       data
         .withAdditionalCompanionStmts(data.additionalCompanionStmts ++ companionStmts)
     }
-
+*/
     private def genPrefixName(tpe: CommonParts): String =
       tpe.fullName.replaceAll("\\.","_") + "_"
 
@@ -217,7 +217,7 @@ object Qt {
         false
     }
 
-    override def analyzeBody(tpe: CommonParts)(data: Data): Data =
-      ( super.analyzeBody(tpe) _ andThen analyzeCxxBody(tpe) _ )(data)
+//    override def analyzeBody(tpe: CommonParts)(data: Data): Data =
+//      ( super.analyzeBody(tpe) _ andThen analyzeCxxBody(tpe) _ )(data)
   }
 }

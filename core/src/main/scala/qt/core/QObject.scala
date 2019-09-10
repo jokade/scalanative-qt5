@@ -12,9 +12,11 @@ import scala.scalanative.interop.AutoReleasable
 
 @Qt
 @include("<QObject>")
+@debug
 class QObject extends CxxObject with AutoReleasable {
   def blockSignals(block: Boolean): Boolean = extern
   def signalsBlocked: Boolean = extern
+
 
   @returnsConst
   def parent: QObject = extern
