@@ -10,5 +10,4 @@ import scala.scalanative.cxx.Cxx
  * QVideoWidget in 'multimediawidgets' inherits this and thus can be passed to functions in QMediaPlayer.
  */
 @Cxx(classname = "QVideoWidget")
-@debug
 trait QVideoWidgetLike extends QObject

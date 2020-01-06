@@ -16,8 +16,8 @@ object Main {
     val notepad = Notepad().autorelease
     notepad.show()
 
-//    val table = TableDemo()
-//    table.show()
+    val table = TableDemo()
+    table.show()
 
 //    val player = Player().autorelease
 //    player.show()

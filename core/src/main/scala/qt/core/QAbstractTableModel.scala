@@ -12,7 +12,7 @@ import qt.macros._
  */
 @Qt
 @include("<QAbstractTableModel>")
-abstract class QAbstractTableModel extends QAbstractItemModel {
+class QAbstractTableModel extends QAbstractItemModel {
 
 }
 

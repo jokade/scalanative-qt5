@@ -22,6 +22,8 @@ class QStringList extends Value with AutoReleasable {
 
   @returnsValue
   def at(idx: Int)(qstr: ResultValue[QString]): Unit = extern
+  @cxxBody("__p->append(*s);")
+  def append(s: CString): Unit = extern
 //  override def append(@ref value: QString): Unit = extern
 //  override def at(idx: CInt)(implicit wrapper: CObjectWrapper[QString]): QString = extern
 //  override def first()(implicit wrapper: CObjectWrapper[QString]): QString = extern

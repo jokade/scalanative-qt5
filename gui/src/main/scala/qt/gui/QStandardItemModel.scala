@@ -15,8 +15,8 @@ import scala.scalanative.cobj.ResultValue
 @Qt
 @include("<QStandardItemModel>")
 class QStandardItemModel extends QAbstractItemModel {
-  override def columnCount(@ref parent: QAbstractItemModel): CInt = extern
-  override def rowCount(@ref parent: QAbstractItemModel): CInt = extern
+  override def columnCount(@ref parent: QModelIndex): CInt = extern
+  override def rowCount(@ref parent: QModelIndex): CInt = extern
 }
 
 object QStandardItemModel {

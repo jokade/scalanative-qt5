@@ -16,7 +16,6 @@ import scala.scalanative.interop.AutoReleasable
  */
 @Qt
 @include("<QFont>")
-@debug
 class QFont extends CxxObject with AutoReleasable {
 
   def pointSize: Int = extern

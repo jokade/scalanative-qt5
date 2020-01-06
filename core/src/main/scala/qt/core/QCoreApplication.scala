@@ -12,7 +12,6 @@ import qt.macros._
  */
 @Qt
 @include("<QCoreApplication>")
-@debug
 class QCoreApplication extends CxxObject {
 
 }

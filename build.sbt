@@ -26,7 +26,7 @@ lazy val moduleSettings = commonSettings ++ Seq(
   nativeLinkStubs := true,
   nbhPkgConfigModules ++= Seq("Qt5Widgets","Qt5Network"),
   nbhCxxCXXFlags := "-std=c++11 -g" +: nbhPkgConfigCFlags.value,
-  nbhCxxLDFlags := nbhPkgConfigLinkingFlags.value
+  nbhCxxLDFlags := nbhPkgConfigLinkingFlags.value :+ "-g"
 )
 
 lazy val qt5 = project.in(file("."))

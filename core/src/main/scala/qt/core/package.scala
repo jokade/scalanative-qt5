@@ -35,6 +35,12 @@ package object core {
     implicit val eventLoop: ExecutionContext = EventLoop
   }
 
+  @CxxEnum("Qt::Orientation")
+  object QtOrientation extends CEnum {
+    val Horizontal = Value(1)
+    val Vertical   = Value(2)
+  }
+
   @CxxEnum("Qt::ItemFlags")
   object QtItemFlags extends CEnum {
     val NoItemFlags	         = Value(0)
@@ -47,5 +53,27 @@ package object core {
     val ItemIsAutoTristate	 = Value(64)
     val ItemNeverHasChildren = Value(128)
     val ItemIsUserTristate	 = Value(256)
+  }
+
+  @CxxEnum("Qt::ItemDataRole")
+  object QtItemDataRole extends CEnum {
+    val DisplayRole               = Value(0)
+    val DecorationRole            = Value(1)
+    val EditRole                  = Value(2)
+    val ToolTipRole               = Value(3)
+    val StatusTipRole             = Value(4)
+    val WhatsThisRole             = Value(5)
+    val FontRole                  = Value(6)
+    val TextAlignmentRole         = Value(7)
+    val BackgroundRole            = Value(8)
+    val BackgroundColorRole       = BackgroundRole
+    val ForegroundRole            = Value(9)
+    val TextColorRole             = ForegroundRole
+    val CheckStateRole            = Value(10)
+    val AccessibleTextRole        = Value(11)
+    val AccessibleDescriptionRole = Value(11)
+    val SizeHintRole              = Value(13)
+    val InitialSortOrderRole      = Value(14)
+    val UserRole                  = Value(0x0100)
   }
 }
