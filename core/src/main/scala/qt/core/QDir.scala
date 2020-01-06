@@ -15,7 +15,7 @@ import scala.scalanative.interop.AutoReleasable
  */
 @Cxx
 @include("<QDir>")
-class QDir {
+class QDir extends CxxObject {
   def exists: Boolean = extern
   def isRelative: Boolean = extern
   def isAbsolute: Boolean = extern

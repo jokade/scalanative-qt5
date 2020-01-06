@@ -1,5 +1,6 @@
 package qt.gui
 
+import de.surfice.smacrotools.debug
 import qt.core.QString
 
 import scalanative._
@@ -15,6 +16,7 @@ import scala.scalanative.interop.AutoReleasable
  */
 @Qt
 @include("<QFont>")
+@debug
 class QFont extends CxxObject with AutoReleasable {
 
   def pointSize: Int = extern

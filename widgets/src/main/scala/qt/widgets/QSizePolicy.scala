@@ -11,7 +11,7 @@ import scala.scalanative.cobj.CEnum
  * @see [[https://doc.qt.io/qt-5/qsizepolicy.html]]
  */
 @Qt
-class QSizePolicy {
+class QSizePolicy extends CxxObject {
 
 }
 

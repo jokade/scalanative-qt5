@@ -54,10 +54,10 @@ object Qt {
       case (cls: ClassParts, data) =>
         val updData = (
           analyzeMainAnnotation(cls) _
-            andThen analyzeTypes(cls) _
-            andThen analyzeConstructor(cls) _
-            andThen analyzeBody(cls) _
-            andThen analyzeSignals(cls) _
+            andThen analyzeTypes(cls)
+            andThen analyzeConstructor(cls)
+            andThen analyzeBody(cls)
+            andThen analyzeSignals(cls)
           )(data)
         (cls, updData)
       case (obj: ObjectParts, data) =>
@@ -73,18 +73,20 @@ object Qt {
       case cls: ClassTransformData =>
         cls
           .updBody(genTransformedTypeBody(cls))
-          .addAnnotations(genCxxSource(cls.data),genCxxWrapperAnnot(cls.data))
+          .addAnnotations(genCxxSource(cls.data,isTrait = false, isObject = false),genCxxWrapperAnnot(cls.data))
           .updCtorParams(genTransformedCtorParams(cls))
           .updParents(genTransformedParents(cls))
+//        transformClass(cls)
       case obj: ObjectTransformData =>
-        val transformedBody = genTransformedCompanionBody(obj) ++ obj.data.additionalCompanionStmts :+ genBindingsObject(obj.data)
-        if(obj.modParts.isCompanion)
-          obj
-            .updBody(transformedBody)
-        else
-          obj
-            .updBody(transformedBody)
-            .addAnnotations(genCxxSource(obj.data))
+        transformObject(obj)
+//        val transformedBody = genTransformedCompanionBody(obj) ++ obj.data.additionalCompanionStmts :+ genBindingsObject(obj.data)
+//        if(obj.modParts.isCompanion)
+//          obj
+//            .updBody(transformedBody)
+//        else
+//          obj
+//            .updBody(transformedBody)
+//            .addAnnotations(genCxxSource(obj.data, isTrait = false, isObject = true))
       case default => default
     }
 
@@ -116,6 +118,10 @@ object Qt {
     private def genPrefixName(tpe: CommonParts): String =
       tpe.fullName.replaceAll("\\.","_") + "_"
 
+    override def analyzeBody(tpe: CommonParts)(data: Data): Data =
+      ( super.analyzeBody(tpe) _
+        andThen analyzeCxxBody(tpe) )(data)
+
     private def analyzeSignals(tpe: CommonParts)(data: Data): Data = {
       val prefix = data.externalPrefix
       val (externalBindings,signalHandlers) = tpe.body.collect {
@@ -127,7 +133,7 @@ object Qt {
 
       data
         .addExternals(externalBindings.toMap)
-        .addCxxWrappers(signalHandlers)
+        .addCxxMethodWrappers(signalHandlers)
     }
 
     override def genTransformedTypeBody(t: TypeTransformData[TypeParts]): Seq[c.universe.Tree] = {
@@ -138,6 +144,7 @@ object Qt {
       }
       super.genTransformedTypeBody(t.updBody(updBody))
     }
+
 
     override protected def genCxxFQClassName(tpe: Type)(implicit data: Data): String =
       tpe.typeSymbol.name.toString

@@ -1,5 +1,7 @@
 package qt.core
 
+import de.surfice.smacrotools.debug
+
 import scalanative._
 import unsafe._
 import cxx._
@@ -10,7 +12,8 @@ import qt.macros._
  */
 @Qt
 @include("<QCoreApplication>")
-class QCoreApplication extends {
+@debug
+class QCoreApplication extends CxxObject {
 
 }
 
@@ -28,7 +31,12 @@ object QCoreApplication {
   @constructor
   private def create(argc: Int, argv: Ptr[CString]): QCoreApplication = extern
 
+  // we're using @noinline here to ensure that the we get the @InlineSource annotation with the C++ wrapper code
+  // for this object. Otherwise, the function mayber inlined, and we'll never see it during linking
+  @noinline
   def exec(): Int = extern
 
+  // see remark for exec()
+  @noinline
   def quit(): Unit = extern
 }

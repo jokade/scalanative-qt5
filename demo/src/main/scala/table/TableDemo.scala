@@ -16,8 +16,8 @@ class TableDemo extends QWidget {
   setWindowTitle("Table Demo")
 
   val tableView = QTableView()
-  val model = TableModel()
-  tableView.setModel(model)
+//  val model = TableModel()
+//  tableView.setModel(model)
   val _layout = QVBoxLayout()
   setLayout(_layout)
   _layout.addWidget(tableView)
@@ -27,14 +27,14 @@ object TableDemo {
   def apply(): TableDemo = extern
 }
 
-@ScalaCxx
-@include("<QAbstractTableModel>")
-@debug
-class TableModel extends QAbstractTableModel {
-  override def columnCount(parent: QAbstractItemModel): CInt = ???
-  override def rowCount(parent: QAbstractItemModel): CInt = ???
-}
-object TableModel {
-  @constructor
-  def apply(): TableModel = extern
-}
+//@ScalaCxx
+//@include("<QAbstractTableModel>")
+//@debug
+//class TableModel extends QAbstractTableModel {
+//  override def columnCount(parent: QAbstractItemModel): CInt = ???
+//  override def rowCount(parent: QAbstractItemModel): CInt = ???
+//}
+//object TableModel {
+//  @constructor
+//  def apply(): TableModel = extern
+//}

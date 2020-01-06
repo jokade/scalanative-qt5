@@ -8,7 +8,6 @@ import cxx._
 import scala.scalanative.cobj.CEnum
 
 @CxxEnum("QIODevice::OpenModeFlag")
-@debug
 object OpenMode extends CEnum {
   val NotOpen	      :OpenMode.Value = Value(0x0000)
   val ReadOnly	    :OpenMode.Value = Value(0x0001)

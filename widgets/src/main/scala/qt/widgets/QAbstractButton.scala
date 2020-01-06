@@ -17,8 +17,8 @@ import scala.scalanative.runtime.{Intrinsics, RawPtr}
  */
 @Qt
 @include("<QAbstractButton>")
+@debug
 class QAbstractButton extends QWidget {
-
 //  @returnsRef
 //  def text: QString = extern
   def setText(@ref text: QString): Unit = extern

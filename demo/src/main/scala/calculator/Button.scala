@@ -1,5 +1,6 @@
 package calculator
 
+import de.surfice.smacrotools.debug
 import qt.macros.Qt
 import qt.widgets.{QSizePolicy, QToolButton}
 
